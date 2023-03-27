@@ -138,7 +138,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 net = PANet(model_path='local-feature-refinement/two-view-refinement/checkpoint.pth').to("cpu")
 
 
-#Create function to calculate and apply refinement displacements for different methods - КАК ВЫПОЛНЯТЬ РЕФАЙНМЕНТ - ОТДЕЛЬНО ДЛЯ КАЖДОЙ ПАРЫ ТОЧЕК БУДЕТ СВОЙ?
+#Create function to calculate and apply refinement displacements for different methods
 def apply_refinement(kp0, kp1, img0, img1):
   matches_refine = np.stack([np.arange(kp0.shape[0]), np.arange(kp0.shape[0])]).T
   grid_displacements12, grid_displacements21 = refine_matches_coarse_to_fine(img0, kp0, img1, kp1, matches_refine,
