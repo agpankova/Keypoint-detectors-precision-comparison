@@ -7,10 +7,6 @@ import torch
 from PIL import Image
 import sys
 
-# from google.colab import files
-# from google.colab import drive
-# drive.mount('/content/drive')
-
 #"""**Parse and process JSON data, get fundamental matrices**"""
 
 #Load JSON data
@@ -80,10 +76,6 @@ def ratio_test(matches, ratio_index):
   return good, good_ind0, good_ind1
 
 #"""**General functions - Create function for Refinement**"""
-
-# Commented out IPython magic to ensure Python compatibility.
-# !git clone https://github.com/mihaidusmanu/local-feature-refinement.git
-# %cd local-feature-refinement/two-view-refinement
 
 sys.path.insert(0, 'local-feature-refinement/two-view-refinement/')
 from refinement import refine_matches_coarse_to_fine
@@ -160,7 +152,6 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 
 # Create the two-view estimation network.
 net = PANet(model_path='local-feature-refinement/two-view-refinement/checkpoint.pth').to("cpu")
-# %cd ../..
 
 
 #Create function to calculate and apply refinement displacements for different methods
@@ -282,17 +273,12 @@ def SIFT_pairs(img_undist0, img_undist1, T_cam0_cam1_fund, T_cam1_cam0_fund):
 
 # """**r2d2 function**"""
 
-# Commented out IPython magic to ensure Python compatibility.
-# !git clone https://github.com/naver/r2d2.git
-# %cd r2d2
 sys.path.insert(0, 'r2d2/')
 from r2d2.extract import extract_multiscale, NonMaxSuppression, load_network
 from r2d2.tools.dataloader import norm_RGB
 
 model = load_network('r2d2/models/r2d2_WASF_N16.pt')
 detector = NonMaxSuppression(0.7, 0.7)
-
-# %cd ..
 
 
 #Create function to apply r2d2 to pairs of undirtorted images. Function returns distances from epipolar lines for the revealed key points.
@@ -406,14 +392,10 @@ def RLOF_pairs(kp0_good, img_undist0, img_undist1, T_cam0_cam1_fund, T_cam1_cam0
 
 # """**ALIKE function**"""
 
-# Commented out IPython magic to ensure Python compatibility.
-# !git clone https://github.com/Shiaoming/ALIKE.git
-# %cd ALIKE
 sys.path.insert(0, 'ALIKE/')
 from ALIKE.alike import ALike, configs
 
 model = ALike(**configs['alike-t'], device='cpu')
-# %cd ..
 
 
 #Create function to apply ALIKE to pairs of undirtorted images. Function returns distances from epipolar lines for the revealed key points.
@@ -464,9 +446,6 @@ def ALIKE_pairs(img_undist0, img_undist1, T_cam0_cam1_fund, T_cam1_cam0_fund):
 
 # """**SPPN function**"""
 
-# Commented out IPython magic to ensure Python compatibility.
-# !git clone https://github.com/magicleap/SuperPointPretrainedNetwork.git
-# %cd SuperPointPretrainedNetwork
 from SuperPointPretrainedNetwork.demo_superpoint import SuperPointFrontend, PointTracker
 
 fe = SuperPointFrontend(weights_path='SuperPointPretrainedNetwork/superpoint_v1.pth',
@@ -476,7 +455,6 @@ fe = SuperPointFrontend(weights_path='SuperPointPretrainedNetwork/superpoint_v1.
                           cuda=False)
 
 tracker = PointTracker(5, nn_thresh=0.7)
-# %cd ..
 
 
 #Create function to apply SPPN to pairs of undirtorted images. Function returns distances from epipolar lines for the revealed key points.
